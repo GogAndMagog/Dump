@@ -1,4 +1,4 @@
-package nestedPackage;
+package Persons;
 
 public class Manager extends Person {
 
@@ -19,6 +19,7 @@ public class Manager extends Person {
   public Double getSalary()
   {
     return (super.getSalary() + bonus);
+
   }
 
   public void setBonus(Double bonus)
