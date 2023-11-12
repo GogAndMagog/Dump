@@ -351,7 +351,7 @@ public class Worker {
     System.out.println("Hash map addition of " + iterations + " elements elapsed time: " + additionTimeHashMap);
 
     System.out.println("Linked list getting of " + iterations + " elements elapsed time: " + gettingTimeLinkedList);
-    System.out.println("Array list getting of " + iterations + " elements elapsed time: " + gettingTimeArrayList);
+//    System.out.println("Array list getting of " + iterations + " elements elapsed time: " + gettingTimeArrayList);
     System.out.println("Hash map getting of " + iterations + " elements elapsed time: " + gettingTimeHashMap);
 
     System.out.println("Linked list random getting of " + iterations + " elements elapsed time: " + gettingRandomTimeLinkedList);

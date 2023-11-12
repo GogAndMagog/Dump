@@ -36,7 +36,7 @@ public class BankAccount {
     return amount;
   }
 
- public void AddMoney(BigDecimal amount){
+  public void AddMoney(BigDecimal amount){
     if (amount.compareTo(BigDecimal.ZERO) < 0)
       throw new NegativeAmountException("", amount);
     else
