@@ -1,7 +1,10 @@
-package Persons;
+package Events.Persons;
+
+import java.util.logging.Logger;
 
 public class Manager extends Person {
 
+  private static final Logger logger = Logger.getLogger("Worker");
   private Double bonus = 0.0;
 
   public Manager(String name, int age, Double salary)

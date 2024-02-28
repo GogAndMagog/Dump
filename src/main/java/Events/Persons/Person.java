@@ -1,4 +1,4 @@
-package Persons;
+package Events.Persons;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 
 public class Person implements Cloneable, IPerson {
 
-  private static final Logger logger = Logger.getLogger("Person");
+  private static final Logger logger = Logger.getLogger("Worker");
 
   private static final String DEFAULT_NAME = "Ivan";
   private String  name;
@@ -17,7 +17,7 @@ public class Person implements Cloneable, IPerson {
 
   private Double  salary;
 
-  static
+  /*static
   {
     logger.setLevel(Level.FINEST);
     try
@@ -31,7 +31,7 @@ public class Person implements Cloneable, IPerson {
     {
       logger.warning("IOException: file handler failed.");
     }
-  }
+  }*/
 
   public int getAge() {
     logger.exiting(this.getClass().getName(), "getAge", age);

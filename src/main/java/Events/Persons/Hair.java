@@ -1,4 +1,4 @@
-package Persons;
+package Events.Persons;
 
 public enum Hair {
 

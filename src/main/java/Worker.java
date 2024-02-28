@@ -1,4 +1,7 @@
-import Persons.*;
+import Events.Persons.IPerson;
+import Events.Persons.Manager;
+import Events.Persons.Person;
+
 import InternalClasses.*;
 import Events.*;
 import Reflection.*;
@@ -8,11 +11,16 @@ import ProxyObjects.*;
 import Sorts.*;
 import Threads.*;
 import org.jetbrains.annotations.NotNull;
+import PageCounter.*;
+import GenericTests.*;
+import Collections.*;
 
-import javax.print.attribute.standard.RequestingUserName;
 import javax.swing.*;
 import javax.swing.Timer;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.lang.reflect.Proxy;
 import java.math.BigDecimal;
 import java.util.*;
@@ -23,43 +31,50 @@ import java.util.logging.Logger;
 
 public class Worker {
 
-  private static final Logger logger = Logger.getLogger("Worker");
+  private static Logger logger = Logger.getLogger("Worker");
 
-  public static void main(String... args) {
+  public static void main(String... args) throws IOException {
+     /*Loading start configuration*/
 
-    System.out.println(System.getProperty("java.util.logging.config.file"));
+
+    File run_properties_path = new File("D:\\Projects\\JAVA\\Dump\\src\\main\\resources\\run.properties");
+    Properties properties = new Properties();
+    properties.load(new FileReader(run_properties_path));
 
     /*Primitives and WrapperClasses test*/
-    final boolean PRIMITIVES_FLAG = false;
+    final boolean PRIMITIVES_FLAG = Boolean.parseBoolean(properties.getProperty("PRIMITIVES_FLAG"));
     /*OOP-test*/
-    boolean OOP_TEST = false;
+    boolean OOP_TEST = Boolean.parseBoolean(properties.getProperty("OOP_TEST"));
     /*BigDecimal test*/
-    boolean BIG_DECIMAL_FLAG = false;
+    boolean BIG_DECIMAL_FLAG = Boolean.parseBoolean(properties.getProperty("BIG_DECIMAL_FLAG"));
     /*String equals test*/
-    boolean STREQUALS_FLAG = false;
+    boolean STREQUALS_FLAG = Boolean.parseBoolean(properties.getProperty("STREQUALS_FLAG"));
     /*Array to string test*/
-    boolean ARRAY_FLAG = false;
+    boolean ARRAY_FLAG = Boolean.parseBoolean(properties.getProperty("ARRAY_FLAG"));
     /* Reflection test*/
-    boolean REFLECTION_FLAG = false;
+    boolean REFLECTION_FLAG = Boolean.parseBoolean(properties.getProperty("REFLECTION_FLAG"));
     /*Events test*/
-    boolean EVENT_FLAG = false;
+    boolean EVENT_FLAG = Boolean.parseBoolean(properties.getProperty("EVENT_FLAG"));
     /*Lambda test*/
-    boolean LAMBDA_FLAG = false;
+    boolean LAMBDA_FLAG = Boolean.parseBoolean(properties.getProperty("LAMBDA_FLAG"));
     /*Internal class test*/
-    boolean INTERNAL_CLASS_FLAG = false;
+    boolean INTERNAL_CLASS_FLAG = Boolean.parseBoolean(properties.getProperty("INTERNAL_CLASS_FLAG"));
     /*Proxy objects test*/
-    boolean PROXY_FLAG = false;
-    /*Collections test*/
-    boolean COLLECTIONS_TEST = false;
+    boolean PROXY_FLAG = Boolean.parseBoolean(properties.getProperty("PROXY_FLAG"));
+    /*Test of standard Java collection framework*/
+    boolean COLLECTIONS_TEST = Boolean.parseBoolean(properties.getProperty("COLLECTIONS_TEST"));
     /*Sorts test*/
-    boolean SORTS_TEST = false;
+    boolean SORTS_TEST = Boolean.parseBoolean(properties.getProperty("SORTS_TEST"));
     /*Algorithms test*/
-    boolean ALG_TEST = false;
+    boolean ALG_TEST = Boolean.parseBoolean(properties.getProperty("ALG_TEST"));
     /*Thread tests*/
-    boolean THREAD_TEST = false;
+    boolean THREAD_TEST = Boolean.parseBoolean(properties.getProperty("THREAD_TEST"));
     /*Stream tests*/
-    boolean STREAM_TEST = true;
-
+    boolean STREAM_TEST = Boolean.parseBoolean(properties.getProperty("STREAM_TEST"));
+    /*Page counter tests*/
+    boolean PAGE_COUNTER_TEST = Boolean.parseBoolean(properties.getProperty("PAGE_COUNTER_TEST"));
+    /*Test of generic types, classes and methods*/
+    boolean GENERIC_TEST = Boolean.parseBoolean(properties.getProperty("GENERIC_TEST"));
 
     System.out.println(Thread.currentThread().getName() + " " + Thread.currentThread().getId());
 
@@ -104,8 +119,8 @@ public class Worker {
       proxyClassTest();
 
     /*Collections test*/
-    if (COLLECTIONS_TEST)
-      collectionsTest();
+//    if (COLLECTIONS_TEST)
+//      collectionsTest();
 
     /*Sorts test*/
     if (SORTS_TEST)
@@ -118,29 +133,45 @@ public class Worker {
     }
 
     /*Threads test*/
-    if (THREAD_TEST)
-    {
-//      BlockingQueueTest.test();
-//      ConcurrentCollectionTest.test();
-//      var taskTest = new TaskTest(10);
-//      taskTest.test();
-//      taskTest.setIterations(100);
-//      taskTest.test();
+    if (THREAD_TEST) {
       RecursiveTaskTest.test();
     }
 
     /*Stream tests*/
-    if (STREAM_TEST)
-    {
+    if (STREAM_TEST) {
       StreamTests.test();
     }
 
-    Worker.logger.finest("finest");
-    Worker.logger.exiting("Worker", "main", args);
+    /*Page counter tests*/
+    if (PAGE_COUNTER_TEST) {
+      int sumOfPages = 1095;
+      System.out.printf("Pages: %d\n", PageCounter.countPages(sumOfPages));
+    }
+
+    /*Test of generic types, classes and methods*/
+    if (GENERIC_TEST)
+    {
+      GenericTests.test();
+    }
+
+    /*Test of standard Java collection framework*/
+    if (COLLECTIONS_TEST)
+    {
+      CollectionsTest.test();
+    }
+
   }
 
   /*Primitives and WrapperClasses test*/
   static void primitivesTest() {
+    int[] numbersPrimitive = { 1, 5, 2};
+    Integer[] numbersClassType = { 1, 5, 2};
+
+    List listPrimitive, listClassType;
+
+    listPrimitive = Arrays.asList(numbersPrimitive);
+    listClassType = Arrays.asList(numbersClassType);
+
     int iterationsMax = 1000,
       i;
 
@@ -158,6 +189,9 @@ public class Worker {
     System.out.printf("double result: %f\n", resPrimitive);
     System.out.printf("Double result: %f\n", resClass);
 
+    int res = 2_147_483_647;
+    System.out.println("Res Integer: " + res);
+
   }
 
   /*OOP-test*/
@@ -169,12 +203,6 @@ public class Worker {
 
     /*Enum test*/
     Worker.changeableHairEnum(persons);
-    Worker.logger.info("persons test passed");
-    Worker.logger.severe("persons test passed");
-    Worker.logger.warning("persons test passed");
-    Worker.logger.fine("persons test passed");
-    Worker.logger.finer("persons test passed");
-    Worker.logger.finest("persons test passed");
   }
 
   /*BigDecimal test*/
@@ -360,29 +388,26 @@ public class Worker {
 
   }
 
-  public static void sortsTest()
-  {
-    List<Integer> unsortedArray = new ArrayList<>(){{
+  public static void sortsTest() {
+    List<Integer> unsortedArray = new ArrayList<>() {{
       add(1);
       add(2);
       add(34);
       add(10);
       add(12);
-    }} ;
+    }};
     Sorter.mergeSort(unsortedArray);
 
 
   }
 
-  private static  void changePerson(Person person)
-  {
+  private static void changePerson(Person person) {
     person = new Person();
     person.plusYear();
     person.plusYear();
   }
-  
-  private static  void changeStr(StringBuilder sb)
-  {
+
+  private static void changeStr(StringBuilder sb) {
     sb.append("append");
   }
 
@@ -440,6 +465,5 @@ public class Worker {
     else
       return b;
   }
-
 
 }
