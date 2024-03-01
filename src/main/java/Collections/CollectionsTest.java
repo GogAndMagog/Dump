@@ -23,6 +23,7 @@ public class CollectionsTest {
   {
     iteratorTest();
     hashMapCollisionTest();
+    viewTest();
   }
 
   /**
@@ -106,6 +107,28 @@ public class CollectionsTest {
 
     logger.info(""+testHashSet.size());
 
+  }
+
+  /**
+   * Test of unmodifiable view.
+   */
+  private static void viewTest()
+  {
+    var names = new ArrayList<>(List.of("Ann", "Bob", "Rob"));
+    var unmodifiableNames = Collections.unmodifiableList(names);
+    names.add("Borg");
+
+    for (var name : unmodifiableNames )
+      logger.info("Unmodifiable name: " + name.toString());
+
+    //Cause the UnsupportedOperationException
+    try {
+      unmodifiableNames.add("Bun");
+    }
+    catch (UnsupportedOperationException e)
+    {
+      logger.log( Level.FINE, "Attempt of modification unmodified view!", e);
+    }
   }
 
   /**
