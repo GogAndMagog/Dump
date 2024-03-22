@@ -24,6 +24,7 @@ public class CollectionsTest {
     iteratorTest();
     hashMapCollisionTest();
     viewTest();
+    testListToArray();
   }
 
   /**
@@ -130,6 +131,21 @@ public class CollectionsTest {
       logger.log( Level.FINE, "Attempt of modification unmodified view!", e);
     }
   }
+
+  /**
+   * Tries to convert a list to an explicit array type.
+   */
+  private static void testListToArray()
+  {
+    var namesList = List.of(new String[]{"Ivan", "Bob"});
+    String[] namesArray = namesList.toArray(new String[namesList.size()]);
+
+    for (var name: namesList)
+      logger.info("List name: " + name);
+    for (var name: namesArray)
+      logger.info("Array name: " + name);
+  }
+
 
   /**
    * Tries to find Name by id.
