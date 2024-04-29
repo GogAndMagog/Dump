@@ -1,6 +1,5 @@
 package TmpTests;
 
-import java.util.concurrent.TimeUnit;
 
 public class Body
 {
@@ -33,7 +32,6 @@ public class Body
       for (long i = 0; i < 1_000_000_000; i++)
         for (long j = 0; j < 20; j++)
             new Body();
-//      TimeUnit.SECONDS.sleep(10);
       System.out.printf("I will change my gender from %s to %s\n", this.sex, sex);
       this.sex = sex;
     }catch (Exception e)
