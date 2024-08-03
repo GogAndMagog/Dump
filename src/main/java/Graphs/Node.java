@@ -1,27 +1,48 @@
 package Graphs;
 
 public class Node {
-    private int weight;
-    private int priority;
+    private Coordinates coordinates;
 
-    public Node(int weight, int priority) {
-        this.weight = weight;
+    private int heuristic;
+    private int cost;
+    private long priority;
+
+    public Node(Coordinates coordinates, int cost, int heuristic, long priority) {
+        this.coordinates = coordinates;
+        this.cost = cost;
+        this.heuristic = heuristic;
         this.priority = priority;
     }
 
-    public int getPriority() {
+    public Coordinates getCoordinates() {
+        return coordinates;
+    }
+
+    public void setCoordinates(Coordinates coordinates) {
+        this.coordinates = coordinates;
+    }
+
+    public long getPriority() {
         return priority;
     }
 
-    public void setPriority(int priority) {
+    public void setPriority(long priority) {
         this.priority = priority;
     }
 
-    public int getWeight() {
-        return weight;
+    public int getHeuristic() {
+        return heuristic;
     }
 
-    public void setWeight(int weight) {
-        this.weight = weight;
+    public void setHeuristic(int heuristic) {
+        this.heuristic = heuristic;
+    }
+
+    public int getCost() {
+        return cost;
+    }
+
+    public void setCost(int cost) {
+        this.cost = cost;
     }
 }

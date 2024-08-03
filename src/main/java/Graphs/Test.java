@@ -1,60 +1,81 @@
 package Graphs;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 public class Test {
 
-  public static void main(String... args) {
-    HashMap<String, HashMap<String, Integer>> graph = new HashMap<>();
-    PathFinder pathFinder = new DijkstraAlgorithm();
+    public static void main(String... args) {
 
-    //Nodes
-    String start = "Start";
-    String a = "A";
-    String b = "B";
-    String c = "C";
-    String d = "D";
-    String e = "E";
+        HashMap<String, HashMap<String, Integer>> graph = new HashMap<>();
+        PathFinder pathFinder = new DijkstraAlgorithm();
 
-    //Creating test-graph
-    HashMap<String, Integer> neighbours = new HashMap<>();
-    neighbours.put(a, 6);
-    neighbours.put(b, 2);
+        //Nodes
+        String start = "Start";
+        String a = "A";
+        String b = "B";
+        String c = "C";
+        String d = "D";
+        String e = "E";
 
-    graph.put(start, new HashMap<>(neighbours));
+        //Creating test-graph
+        HashMap<String, Integer> neighbours = new HashMap<>();
+        neighbours.put(a, 6);
+        neighbours.put(b, 2);
 
-    neighbours.clear();
-    neighbours.put(c, 1);
+        graph.put(start, new HashMap<>(neighbours));
 
-    graph.put(a, new HashMap<>(neighbours));
+        neighbours.clear();
+        neighbours.put(c, 1);
 
-    neighbours.clear();
-    neighbours.put(c, 1);
+        graph.put(a, new HashMap<>(neighbours));
 
-    graph.put(a, new HashMap<>(neighbours));
+        neighbours.clear();
+        neighbours.put(c, 1);
 
-    neighbours.clear();
-    neighbours.put(a, 3);
-    neighbours.put(c, 5);
+        graph.put(a, new HashMap<>(neighbours));
 
-    graph.put(b, new HashMap<>(neighbours));
+        neighbours.clear();
+        neighbours.put(a, 3);
+        neighbours.put(c, 5);
 
-    neighbours.clear();
-    neighbours.put(e, 10);
-    neighbours.put(d, 5);
-    graph.put(c, new HashMap<>(neighbours));
+        graph.put(b, new HashMap<>(neighbours));
 
-    neighbours.clear();
-    graph.put(e, new HashMap<>(neighbours));
+        neighbours.clear();
+        neighbours.put(e, 10);
+        neighbours.put(d, 5);
+        graph.put(c, new HashMap<>(neighbours));
 
-    neighbours.clear();
-    neighbours.put(e, 4);
-    graph.put(d, new HashMap<>(neighbours));
+        neighbours.clear();
+        graph.put(e, new HashMap<>(neighbours));
 
-    //Testing algorithm
-    pathFinder.findPath(graph, start, e);
+        neighbours.clear();
+        neighbours.put(e, 4);
+        graph.put(d, new HashMap<>(neighbours));
 
-    System.out.println(graph);
-  }
+        //Testing algorithm
+//        pathFinder.findPath(graph, start, e);
+
+        System.out.println(graph);
+    }
+
+    private static Graph<Coordinates, Node> createGraph1() {
+        int n = 10;
+        int m = 10;
+        int id = 0;
+
+        Graph<Coordinates, Node> graph = new Graph<>();
+        Coordinates coordinates = new Coordinates(0, 0);
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                coordinates = new Coordinates(0, 0);
+                graph.addNode(coordinates);
+                id++;
+            }
+        }
+
+        return graph;
+    }
 }

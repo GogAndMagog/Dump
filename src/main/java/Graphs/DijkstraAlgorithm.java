@@ -4,10 +4,10 @@ import java.util.*;
 
 public class DijkstraAlgorithm implements PathFinder {
   @Override
-  public List<String> findPath(HashMap<String, HashMap<String, Integer>> graph, String baseNode, String targetNode) {
+  public List<String> findPath(HashMap<String, HashMap<String, Node>> graph, String baseNode, String targetNode) {
     HashMap<String, Integer> costs = createCosts(graph, baseNode);
     HashMap<String, String> parents = createParents(graph, baseNode);
-    HashMap<String, Integer> neighbours = new HashMap<>();
+    HashMap<String, Node> neighbours = new HashMap<>();
 
     HashSet<String> passedNodes = new HashSet<>();
 
@@ -27,7 +27,7 @@ public class DijkstraAlgorithm implements PathFinder {
         continue;
       }
       for (var neighbour : neighbours.keySet()) {
-        newCost = cost + neighbours.get(neighbour);
+        newCost = cost + neighbours.get(neighbour).getCost();
         if (costs.get(neighbour) > newCost) {
           costs.put(neighbour, newCost);
           parents.put(neighbour, currentNode);
@@ -40,7 +40,7 @@ public class DijkstraAlgorithm implements PathFinder {
     return restorePath(parents, baseNode, targetNode);
   }
 
-  private HashMap<String, String> createParents(HashMap<String, HashMap<String, Integer>> graph, String baseNode) {
+  private HashMap<String, String> createParents(HashMap<String, HashMap<String, Node>> graph, String baseNode) {
     HashMap parents = new HashMap<String, String>();
     for (var key : graph.keySet()) {
       parents.put(key, null);
@@ -59,7 +59,7 @@ public class DijkstraAlgorithm implements PathFinder {
     return parents;
   }
 
-  private HashMap<String, Integer> createCosts(HashMap<String, HashMap<String, Integer>> graph, String baseNode) {
+  private HashMap<String, Integer> createCosts(HashMap<String, HashMap<String, Node>> graph, String baseNode) {
     HashMap<String, Integer> costs = new HashMap<>();
 
     for (var node : graph.keySet()) {
@@ -68,7 +68,7 @@ public class DijkstraAlgorithm implements PathFinder {
 
     var neighbours = graph.get(baseNode);
     for (var neighbourNode : neighbours.keySet()) {
-      costs.put(neighbourNode, neighbours.get(neighbourNode));
+      costs.put(neighbourNode, neighbours.get(neighbourNode).getCost());
     }
 
     System.out.println(costs);
