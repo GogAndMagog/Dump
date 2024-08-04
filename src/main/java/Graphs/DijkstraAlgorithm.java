@@ -4,10 +4,10 @@ import java.util.*;
 
 public class DijkstraAlgorithm implements PathFinder {
   @Override
-  public List<String> findPath(HashMap<String, HashMap<String, Node>> graph, String baseNode, String targetNode) {
+  public List<String> findPath(HashMap<String, HashMap<String, AStarNode>> graph, String baseNode, String targetNode) {
     HashMap<String, Integer> costs = createCosts(graph, baseNode);
     HashMap<String, String> parents = createParents(graph, baseNode);
-    HashMap<String, Node> neighbours = new HashMap<>();
+    HashMap<String, AStarNode> neighbours = new HashMap<>();
 
     HashSet<String> passedNodes = new HashSet<>();
 
@@ -40,7 +40,7 @@ public class DijkstraAlgorithm implements PathFinder {
     return restorePath(parents, baseNode, targetNode);
   }
 
-  private HashMap<String, String> createParents(HashMap<String, HashMap<String, Node>> graph, String baseNode) {
+  private HashMap<String, String> createParents(HashMap<String, HashMap<String, AStarNode>> graph, String baseNode) {
     HashMap parents = new HashMap<String, String>();
     for (var key : graph.keySet()) {
       parents.put(key, null);
@@ -59,7 +59,7 @@ public class DijkstraAlgorithm implements PathFinder {
     return parents;
   }
 
-  private HashMap<String, Integer> createCosts(HashMap<String, HashMap<String, Node>> graph, String baseNode) {
+  private HashMap<String, Integer> createCosts(HashMap<String, HashMap<String, AStarNode>> graph, String baseNode) {
     HashMap<String, Integer> costs = new HashMap<>();
 
     for (var node : graph.keySet()) {
