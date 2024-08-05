@@ -10,7 +10,6 @@ public class AStarGraph<Coordinates, T extends AStarNode> {
     }
 
     public void addNode(Coordinates coordinates, T node) {
-//        graph.put(coordinates, new HashMap<>());
         nodes.put(coordinates, node);
     }
 
@@ -18,7 +17,6 @@ public class AStarGraph<Coordinates, T extends AStarNode> {
 
     public void addNeighbour(Coordinates coordinates, T node) {
         try {
-//            graph.get(coordinates).put((Coordinates) node.getCoordinates(), node);
             nodes.get(coordinates).addNeighbour(node);
         }
         catch (Exception e) {
@@ -30,9 +28,6 @@ public class AStarGraph<Coordinates, T extends AStarNode> {
     public String toString() {
         StringBuilder str = new StringBuilder();
 
-//        for (Coordinates coordinates : graph.keySet()) {
-//            str.append(coordinates).append(": ").append(graph.get(coordinates)).append("\n");
-//        }
         for (Coordinates id : nodes.keySet()) {
             str.append(id).append(": ").append(nodes.get(id).neighbours).append("\n");
         }

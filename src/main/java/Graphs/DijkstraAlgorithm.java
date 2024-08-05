@@ -2,55 +2,56 @@ package Graphs;
 
 import java.util.*;
 
-public class DijkstraAlgorithm implements PathFinder {
-  @Override
-  public List<String> findPath(HashMap<String, HashMap<String, AStarNode>> graph, String baseNode, String targetNode) {
-    HashMap<String, Integer> costs = createCosts(graph, baseNode);
-    HashMap<String, String> parents = createParents(graph, baseNode);
-    HashMap<String, AStarNode> neighbours = new HashMap<>();
+public class DijkstraAlgorithm implements PathFinder<String, DijkstraNode> {
 
-    HashSet<String> passedNodes = new HashSet<>();
+//  public List<String> findPath(HashMap<String, HashMap<String, AStarNode>> graph, String baseNode, String targetNode) {
+//    HashMap<String, Integer> costs = createCosts(graph, baseNode);
+//    HashMap<String, String> parents = createParents(graph, baseNode);
+//    HashMap<String, AStarNode> neighbours = new HashMap<>();
+//
+//    HashSet<String> passedNodes = new HashSet<>();
+//
+//    int cost = Integer.MAX_VALUE;
+//    int newCost = 0;
+//
+//    System.out.println(graph);
+//
+//    String currentNode = findLowestCostNode(costs, passedNodes);
+//    System.out.println(currentNode);
+//    while (currentNode != null) {
+//      cost = costs.get(currentNode);
+//      neighbours = graph.get(currentNode);
+//      if (neighbours == null) {
+//        passedNodes.add(currentNode);
+//        currentNode = null;
+//        continue;
+//      }
+//      for (var neighbour : neighbours.keySet()) {
+//        newCost = cost + neighbours.get(neighbour).getCost();
+//        if (costs.get(neighbour) > newCost) {
+//          costs.put(neighbour, newCost);
+//          parents.put(neighbour, currentNode);
+//        }
+//      }
+//      passedNodes.add(currentNode);
+//      currentNode = findLowestCostNode(costs, passedNodes);
+//    }
+//
+//    return restorePath(parents, baseNode, targetNode);
+//  }
 
-    int cost = Integer.MAX_VALUE;
-    int newCost = 0;
-
-    System.out.println(graph);
-
-    String currentNode = findLowestCostNode(costs, passedNodes);
-    System.out.println(currentNode);
-    while (currentNode != null) {
-      cost = costs.get(currentNode);
-      neighbours = graph.get(currentNode);
-      if (neighbours == null) {
-        passedNodes.add(currentNode);
-        currentNode = null;
-        continue;
-      }
-      for (var neighbour : neighbours.keySet()) {
-        newCost = cost + neighbours.get(neighbour).getCost();
-        if (costs.get(neighbour) > newCost) {
-          costs.put(neighbour, newCost);
-          parents.put(neighbour, currentNode);
-        }
-      }
-      passedNodes.add(currentNode);
-      currentNode = findLowestCostNode(costs, passedNodes);
-    }
-
-    return restorePath(parents, baseNode, targetNode);
-  }
-
-  private HashMap<String, String> createParents(HashMap<String, HashMap<String, AStarNode>> graph, String baseNode) {
+  private HashMap<String, String> createParents(DijkstraGraph graph, DijkstraNode baseNode) {
     HashMap parents = new HashMap<String, String>();
-    for (var key : graph.keySet()) {
-      parents.put(key, null);
+    for (var node : graph.getNodes().keySet()) {
+      parents.put(node, null);
     }
 
-    HashMap baseNodeNeighbours = graph.get(baseNode);
+    var baseNodeNeighbours = ((DijkstraNode) graph.getNode(baseNode)).getNeighbours();
 
     for (var neighbour : baseNodeNeighbours.keySet()) {
       if (parents.containsKey(neighbour)) {
-        parents.put(neighbour, baseNode);
+          var raw = parents.get(neighbour);
+          raw = baseNode.getId();
       }
     }
 
@@ -107,5 +108,47 @@ public class DijkstraAlgorithm implements PathFinder {
     System.out.println(path);
 
     return path;
+  }
+
+  @Override
+  public List findPath(DijkstraGraph graph, String baseNode, String targetNode) {
+    HashMap<String, Integer> costs = createCosts(graph, baseNode);
+    HashMap<String, String> parents = createParents(graph, baseNode);
+    HashMap<String, AStarNode> neighbours = new HashMap<>();
+
+    HashSet<String> passedNodes = new HashSet<>();
+
+    int cost = Integer.MAX_VALUE;
+    int newCost = 0;
+
+    System.out.println(graph);
+
+    String currentNode = findLowestCostNode(costs, passedNodes);
+    System.out.println(currentNode);
+    while (currentNode != null) {
+      cost = costs.get(currentNode);
+      neighbours = graph.get(currentNode);
+      if (neighbours == null) {
+        passedNodes.add(currentNode);
+        currentNode = null;
+        continue;
+      }
+      for (var neighbour : neighbours.keySet()) {
+        newCost = cost + neighbours.get(neighbour).getCost();
+        if (costs.get(neighbour) > newCost) {
+          costs.put(neighbour, newCost);
+          parents.put(neighbour, currentNode);
+        }
+      }
+      passedNodes.add(currentNode);
+      currentNode = findLowestCostNode(costs, passedNodes);
+    }
+
+    return restorePath(parents, baseNode, targetNode);
+  }
+
+  @Override
+  public List<Coordinates> findPath(DijkstraGraph graph, String baseNode, String targetNode) {
+    return List.of();
   }
 }
