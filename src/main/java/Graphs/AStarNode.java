@@ -1,48 +1,21 @@
 package Graphs;
 
+import javax.xml.crypto.NodeSetData;
 import java.util.HashMap;
 
-public class AStarNode {
-    private Coordinates coordinates;
+//public class AStarNode extends DijkstraNode{
+public class AStarNode extends Node<String>{
 
-    String id;
-
-    private int heuristic;
     private int cost;
-    private long priority;
+    private double heuristic;
+    private double priority;
 
-    HashMap<Coordinates, AStarNode> neighbours = new HashMap<>();
+    HashMap<String, AStarNode> neighbours = new HashMap<>();
 
-    public AStarNode(Coordinates coordinates, String id, int cost, int heuristic, long priority) {
-        this.coordinates = coordinates;
+    public AStarNode(String id, Coordinates coordinates, int cost) {
         this.id = id;
-        this.cost = cost;
-        this.heuristic = heuristic;
-        this.priority = priority;
-    }
-
-    public Coordinates getCoordinates() {
-        return coordinates;
-    }
-
-    public void setCoordinates(Coordinates coordinates) {
         this.coordinates = coordinates;
-    }
-
-    public long getPriority() {
-        return priority;
-    }
-
-    public void setPriority(long priority) {
-        this.priority = priority;
-    }
-
-    public int getHeuristic() {
-        return heuristic;
-    }
-
-    public void setHeuristic(int heuristic) {
-        this.heuristic = heuristic;
+        this.cost = cost;
     }
 
     public int getCost() {
@@ -53,21 +26,36 @@ public class AStarNode {
         this.cost = cost;
     }
 
-    public HashMap<Coordinates, AStarNode> getNeighbours() {
-        return neighbours;
+    public void setHeuristic(double heuristic) {
+        this.heuristic = heuristic;
+    }
+
+    public double getPriority() {
+        return priority;
+    }
+
+    public void setPriority(double priority) {
+        this.priority = priority;
+    }
+
+    public double getHeuristic() {
+        return heuristic;
     }
 
     public void addNeighbour(AStarNode neighbour) {
-        neighbours.put(neighbour.getCoordinates(), neighbour);
+        neighbours.put(neighbour.getId(), neighbour);
+    }
+
+    public HashMap<String, AStarNode> getNeighbours()
+    {
+        return neighbours;
     }
 
     @Override
     public String toString() {
-        return "Node{" +
-                "coordinates=" + coordinates +
-                ", id=" + id +
+        return super.toString() +
+                "{" +
                 ", heuristic=" + heuristic +
-                ", cost=" + cost +
                 ", priority=" + priority +
                 '}';
     }

@@ -1,5 +1,7 @@
 package Graphs.DistanceCalculationHeuristic;
 
+import Graphs.Coordinates;
+
 public interface DistanceCalculator {
-    public int calculateDistance(int x1, int y1, int x2, int y2);
+    public int calculateDistance(Coordinates from, Coordinates to);
 }

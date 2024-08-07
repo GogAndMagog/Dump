@@ -1,6 +1,6 @@
 package Graphs;
 
-public interface Graph<Node> {
+public interface Graph<Id, Node> {
     public void addNode(Node node);
-    public Node getNode(Node node);
+    public Node getNodeById(Id node);
 }

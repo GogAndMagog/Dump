@@ -3,13 +3,13 @@ package Graphs;
 import java.util.HashMap;
 
 public class DijkstraNode extends Node<String> {
-    private Coordinates coordinates;
 
+    private Coordinates coordinates;
     private int cost;
 
-    HashMap<Coordinates, DijkstraNode> neighbours = new HashMap<>();
+    HashMap<String, DijkstraNode> neighbours = new HashMap<>();
 
-    public DijkstraNode(Coordinates coordinates, String id, int cost) {
+    public DijkstraNode(String id, Coordinates coordinates, int cost) {
         this.coordinates = coordinates;
         this.id = id;
         this.cost = cost;
@@ -31,12 +31,12 @@ public class DijkstraNode extends Node<String> {
         this.cost = cost;
     }
 
-    public HashMap<Coordinates, DijkstraNode> getNeighbours() {
+    public HashMap<String, DijkstraNode> getNeighbours() {
         return neighbours;
     }
 
     public void addNeighbour(DijkstraNode neighbour) {
-        neighbours.put(neighbour.getCoordinates(), neighbour);
+        neighbours.put(neighbour.getId(), neighbour);
     }
 
     @Override

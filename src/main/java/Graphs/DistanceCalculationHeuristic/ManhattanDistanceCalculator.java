@@ -1,8 +1,10 @@
 package Graphs.DistanceCalculationHeuristic;
 
+import Graphs.Coordinates;
+
 public class ManhattanDistanceCalculator implements DistanceCalculator {
     @Override
-    public int calculateDistance(int x1, int y1, int x2, int y2) {
-        return Math.abs(x1 - x2) + Math.abs(y1 - y2);
+    public int calculateDistance(Coordinates from, Coordinates to) {
+        return Math.abs(from.getX() - to.getY()) + Math.abs(from.getY() - to.getY());
     }
 }

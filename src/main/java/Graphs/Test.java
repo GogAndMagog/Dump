@@ -1,101 +1,160 @@
 package Graphs;
 
+import Graphs.DistanceCalculationHeuristic.ChebyshevDistanceCalculator;
+import Graphs.DistanceCalculationHeuristic.DistanceCalculator;
+
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class Test {
 
     public static void main(String... args) {
         Test test = new Test();
-        test.testNewGraph();
+
+//        test.testDijkstra2();
+        test.testAStarGraph2();
 
     }
 
-    private void testDijkstra() {
-        HashMap<String, HashMap<String, Integer>> graph = new HashMap<>();
+    private void testDijkstra1() {
+        Graph graph = createDijkstraGraph(3, 3); ;
         PathFinder pathFinder = new DijkstraAlgorithm();
 
-        //Nodes
-        String start = "Start";
-        String a = "A";
-        String b = "B";
-        String c = "C";
-        String d = "D";
-        String e = "E";
+        var node = ((DijkstraGraph) graph).getNodeByCoordinates(new Coordinates( 1, 1));
+        node.setCost(3);
 
-        //Creating test-graph
-        HashMap<String, Integer> neighbours = new HashMap<>();
-        neighbours.put(a, 6);
-        neighbours.put(b, 2);
+        var path = pathFinder.findPath(graph, "0", "8");
 
-        graph.put(start, new HashMap<>(neighbours));
-
-        neighbours.clear();
-        neighbours.put(c, 1);
-
-        graph.put(a, new HashMap<>(neighbours));
-
-        neighbours.clear();
-        neighbours.put(c, 1);
-
-        graph.put(a, new HashMap<>(neighbours));
-
-        neighbours.clear();
-        neighbours.put(a, 3);
-        neighbours.put(c, 5);
-
-        graph.put(b, new HashMap<>(neighbours));
-
-        neighbours.clear();
-        neighbours.put(e, 10);
-        neighbours.put(d, 5);
-        graph.put(c, new HashMap<>(neighbours));
-
-        neighbours.clear();
-        graph.put(e, new HashMap<>(neighbours));
-
-        neighbours.clear();
-        neighbours.put(e, 4);
-        graph.put(d, new HashMap<>(neighbours));
-
-        //Testing algorithm
-//        pathFinder.findPath(graph, start, e);
-
-        System.out.println(graph);
+        System.out.println(path);
     }
 
-    private void testNewGraph() {
-        AStarGraph<Coordinates, AStarNode> AStarGraph = createGraph(3, 3);
+    private void testDijkstra2() {
+        Graph graph = createDijkstraGraph(5, 5); ;
+        PathFinder pathFinder = new DijkstraAlgorithm();
 
-        var node = AStarGraph.getNode(new Coordinates(1,1));
+        var node = ((DijkstraGraph) graph).getNodeByCoordinates(new Coordinates( 1, 0));
+        node.setCost(2);
+        node = ((DijkstraGraph) graph).getNodeByCoordinates(new Coordinates( 1, 1));
+        node.setCost(10);
+        node = ((DijkstraGraph) graph).getNodeByCoordinates(new Coordinates( 1, 2));
+        node.setCost(10);
+        node = ((DijkstraGraph) graph).getNodeByCoordinates(new Coordinates( 1, 3));
+        node.setCost(10);
+
+        var path = pathFinder.findPath(graph,
+                "0",
+                ((DijkstraGraph) graph).getNodeByCoordinates(new Coordinates( 4, 4)).getId());
+
+        System.out.println(path);
+    }
+
+    private void testAStarGraph2() {
+        DistanceCalculator distanceCalculator = new ChebyshevDistanceCalculator();
+        PathFinder pathFinder = new AStarAlgorithm(distanceCalculator);
+        Graph graph = createAStarGraph(5, 5);
+
+        var node = ((AStarGraph) graph).getNodeByCoordinates(new Coordinates( 1, 0));
+        node.setCost(10);
+        node = ((AStarGraph) graph).getNodeByCoordinates(new Coordinates( 1, 1));
+        node.setCost(10);
+        node = ((AStarGraph) graph).getNodeByCoordinates(new Coordinates( 1, 2));
+        node.setCost(2);
+        node = ((AStarGraph) graph).getNodeByCoordinates(new Coordinates( 1, 3));
+        node.setCost(10);
+
+        var path = pathFinder.findPath(graph,
+                "0",
+                ((AStarGraph) graph).getNodeByCoordinates(new Coordinates( 4, 4)).getId());
+
+        System.out.println(path);
+    }
+
+    private void testAStarGraph1() {
+        DistanceCalculator distanceCalculator = new ChebyshevDistanceCalculator();
+        PathFinder pathFinder = new AStarAlgorithm(distanceCalculator);
+        AStarGraph graph = createAStarGraph(3, 3);
+
+        var node = graph.getNodeById("1");
         node.setCost(5);
-        System.out.println(AStarGraph);
+
+        var path = pathFinder.findPath(graph, "0", "8");
+
+        System.out.println(path);
     }
 
-    private AStarGraph<Coordinates, AStarNode> createGraph(int n, int m) {
-        AStarGraph<Coordinates, AStarNode> AStarGraph = new AStarGraph<>();
-        Coordinates coordinates = new Coordinates(0, 0);
+    private DijkstraGraph createDijkstraGraph(int n, int m)
+    {
+        DijkstraGraph dijkstraGraph = new DijkstraGraph();
+        Coordinates coordinates;
         int id = 0;
 
 
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 coordinates = new Coordinates(i, j);
-                AStarGraph.addNode(coordinates, new AStarNode(coordinates, Integer.toString(id), 0, 0, 0));
+                dijkstraGraph.addNode(new DijkstraNode(Integer.toString(id), coordinates, 1));
                 id++;
             }
         }
 
-        for (var node : AStarGraph.nodes.keySet()) {
-            var neighbors = getNeighbours(node, n, m);
+        for (var node : dijkstraGraph.getNodes()) {
+            var neighbors = getNeighbours(node.getCoordinates(), n, m);
             for (var neighbor : neighbors) {
-                AStarGraph.addNeighbour(node, AStarGraph.getNode(neighbor));
+                dijkstraGraph.addNeighbour(node.getId(), dijkstraGraph.getNodeByCoordinates(neighbor));
             }
         }
 
-        return AStarGraph;
+        return dijkstraGraph;
     }
+
+    private AStarGraph createAStarGraph(int n, int m)
+    {
+        AStarGraph dijkstraGraph = new AStarGraph();
+        Coordinates coordinates;
+        int id = 0;
+
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                coordinates = new Coordinates(i, j);
+                dijkstraGraph.addNode(new AStarNode(Integer.toString(id), coordinates, 1));
+                id++;
+            }
+        }
+
+        for (var node : dijkstraGraph.getNodes()) {
+            var neighbors = getNeighbours(node.getCoordinates(), n, m);
+            for (var neighbor : neighbors) {
+                dijkstraGraph.addNeighbour(node.getId(), dijkstraGraph.getNodeByCoordinates(neighbor));
+            }
+        }
+
+        return dijkstraGraph;
+    }
+
+//    private AStarGraph<Coordinates, AStarNode> createAstarGraph(int n, int m) {
+//        AStarGraph<Coordinates, AStarNode> AStarGraph = new AStarGraph<>();
+//        Coordinates coordinates = new Coordinates(0, 0);
+//        int id = 0;
+//
+//
+//        for (int i = 0; i < n; i++) {
+//            for (int j = 0; j < n; j++) {
+//                coordinates = new Coordinates(i, j);
+//                AStarGraph.addNode(coordinates, new AStarNode(coordinates, Integer.toString(id), 0, 0, 0));
+//                id++;
+//            }
+//        }
+//
+//        for (var node : AStarGraph.nodes.keySet()) {
+//            var neighbors = getNeighbours(node, n, m);
+//            for (var neighbor : neighbors) {
+//                AStarGraph.addNeighbour(node, AStarGraph.getNode(neighbor));
+//            }
+//        }
+//
+//        return AStarGraph;
+//    }
 
     public List<Coordinates> getNeighbours(Coordinates coordinates, int n, int m) {
         List<Coordinates> neighbors = new ArrayList<>();

@@ -1,35 +1,49 @@
 package Graphs;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
-public class AStarGraph<Coordinates, T extends AStarNode> {
-//    HashMap<Coordinates, HashMap<Coordinates, T>> graph = new HashMap<>();
-    HashMap<Coordinates, T> nodes = new HashMap<>();
+public class AStarGraph implements Graph<String, AStarNode> {
 
-    public AStarGraph() {
+    private List<AStarNode> nodes = new ArrayList<>();
+    private HashMap<String, AStarNode> idToNodes = new HashMap<>();
+    private HashMap<Coordinates, AStarNode> coordinatesToNodes = new HashMap<>();
+
+    @Override
+    public void addNode(AStarNode node) {
+        nodes.add(node);
+        idToNodes.put(node.getId(), node);
+        coordinatesToNodes.put(node.getCoordinates(), node);
     }
 
-    public void addNode(Coordinates coordinates, T node) {
-        nodes.put(coordinates, node);
+    @Override
+    public AStarNode getNodeById(String node) {
+        return idToNodes.get(node);
     }
 
-    public T getNode(Coordinates coordinates) {return nodes.get(coordinates);}
+    public AStarNode getNodeByCoordinates(Coordinates coordinates) {
+        return coordinatesToNodes.get(coordinates);
+    }
 
-    public void addNeighbour(Coordinates coordinates, T node) {
+    public void addNeighbour(String id, AStarNode node) {
         try {
-            nodes.get(coordinates).addNeighbour(node);
-        }
-        catch (Exception e) {
+            idToNodes.get(id).addNeighbour(node);
+        } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public List<AStarNode> getNodes() {
+        return nodes;
     }
 
     @Override
     public String toString() {
         StringBuilder str = new StringBuilder();
 
-        for (Coordinates id : nodes.keySet()) {
-            str.append(id).append(": ").append(nodes.get(id).neighbours).append("\n");
+        for (var node : nodes) {
+            str.append(node.getId()).append(": ").append(node.getNeighbours()).append("\n");
         }
         return str.toString();
     }

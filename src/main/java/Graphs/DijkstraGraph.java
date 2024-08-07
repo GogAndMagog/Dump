@@ -1,31 +1,40 @@
 package Graphs;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
-public class DijkstraGraph implements Graph<DijkstraNode> {
-
-    private HashMap<String, DijkstraNode> nodes = new HashMap<>();
+public class DijkstraGraph implements Graph<String, DijkstraNode> {
+    private List<DijkstraNode> nodes = new ArrayList<>();
+    private HashMap<String, DijkstraNode> idToNodes = new HashMap<>();
+    private HashMap<Coordinates, DijkstraNode> coordinatesToNodes = new HashMap<>();
 
     @Override
     public void addNode(DijkstraNode node) {
-        nodes.put(node.getId(), node);
+        nodes.add(node);
+        idToNodes.put(node.getId(), node);
+        coordinatesToNodes.put(node.getCoordinates(), node);
     }
 
     @Override
-    public DijkstraNode getNode(DijkstraNode dijkstraNode) {
-        return null;
+    public DijkstraNode getNodeById(String dijkstraNode) {
+        return idToNodes.get(dijkstraNode);
+    }
+
+    public DijkstraNode getNodeByCoordinates(Coordinates coordinates) {
+        return coordinatesToNodes.get(coordinates);
     }
 
     public void addNeighbour(String id, DijkstraNode node) {
         try {
-            nodes.get(id).addNeighbour(node);
+            idToNodes.get(id).addNeighbour(node);
         }
         catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public HashMap<String, DijkstraNode> getNodes() {
+    public List<DijkstraNode> getNodes() {
         return nodes;
     }
 
@@ -33,8 +42,8 @@ public class DijkstraGraph implements Graph<DijkstraNode> {
     public String toString() {
         StringBuilder str = new StringBuilder();
 
-        for (var id : nodes.keySet()) {
-            str.append(id).append(": ").append(nodes.get(id).neighbours).append("\n");
+        for (var node : nodes) {
+            str.append(node.getId()).append(": ").append(node.getNeighbours()).append("\n");
         }
         return str.toString();
     }
